@@ -6,7 +6,7 @@ Release:	1
 License:	GPL and FIPL (see the license-fi.txt)
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/freeimage/%{name}360.zip
-# Source0-md5:	0b3d15fee3455914729134c0cee84141
+# Source0-md5:	3db869abfa1ceaf8f831f39e0935bc8e
 Source1:	http://dl.sourceforge.net/freeimage/%{name}360.pdf
 # Source1-md5:	fb2141db11c35a60d8511dda4ce8a09d
 URL:		http://freeimage.sourceforge.net/index.html
