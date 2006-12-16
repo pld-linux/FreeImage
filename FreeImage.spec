@@ -1,14 +1,14 @@
 Summary:	Library for handling different graphics files formats
 Summary(pl):	Biblioteka do manipulacji ró¿nymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.6.0
+Version:	3.9.2
 Release:	1
 License:	GPL and FIPL (see the license-fi.txt)
 Group:		Libraries
-Source0:	http://dl.sourceforge.net/freeimage/%{name}360.zip
-# Source0-md5:	3db869abfa1ceaf8f831f39e0935bc8e
-Source1:	http://dl.sourceforge.net/freeimage/%{name}360.pdf
-# Source1-md5:	fb2141db11c35a60d8511dda4ce8a09d
+Source0:	http://dl.sourceforge.net/freeimage/%{name}392.zip
+# Source0-md5:	e7a3e2429a0db52fb377bed7da61e5a5
+Source1:	http://dl.sourceforge.net/freeimage/%{name}392.pdf
+# Source1-md5:	ecbc9eedf5b4e04495deaaee8935c0fd
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	unzip
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -84,7 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc FreeImage360.pdf
+%doc FreeImage392.pdf
 %attr(755,root,root) %{_libdir}/libfreeimage.so
 %{_includedir}/*
 %{_examplesdir}/%{name}-%{version}
