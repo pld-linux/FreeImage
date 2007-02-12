@@ -1,5 +1,5 @@
 Summary:	Library for handling different graphics files formats
-Summary(pl.UTF-8):   Biblioteka do manipulacji różnymi formatami plików graficznych
+Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
 Version:	3.9.2
 Release:	1
@@ -27,7 +27,7 @@ FreeImage jest łatwy w użyciu, szybki, wielowątkowy i bezpieczny.
 
 %package devel
 Summary:	Header files for FreeImage library
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki FreeImage
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki FreeImage
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -39,7 +39,7 @@ Pliki nagłówkowe biblioteki FreeImage.
 
 %package static
 Summary:	Static FreeImage library
-Summary(pl.UTF-8):   Statyczna biblioteka FreeImage
+Summary(pl.UTF-8):	Statyczna biblioteka FreeImage
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
