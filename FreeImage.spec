@@ -1,5 +1,5 @@
 Summary:	Library for handling different graphics files formats
-Summary(pl):	Biblioteka do manipulacji ró¿nymi formatami plików graficznych
+Summary(pl.UTF-8):   Biblioteka do manipulacji rÃ³Å¼nymi formatami plikÃ³w graficznych
 Name:		FreeImage
 Version:	3.9.2
 Release:	1
@@ -19,34 +19,34 @@ support popular graphics image formats like PNG, BMP, JPEG, TIFF and
 others as needed by multimedia applications. FreeImage is easy to use,
 fast, multithreading, safe.
 
-%description -l pl
-FreeImage jest projektem biblioteki dla deweloperów, którzy chc±
-wspieraæ popularne formaty plików graficznych takie jak PNG, BMP,
+%description -l pl.UTF-8
+FreeImage jest projektem biblioteki dla deweloperÃ³w, ktÃ³rzy chcÄ…
+wspieraÄ‡ popularne formaty plikÃ³w graficznych takie jak PNG, BMP,
 JPEG, TIFF i inne wykorzystywane w aplikacjach multimedialnych.
-FreeImage jest ³atwy w u¿yciu, szybki, wielow±tkowy i bezpieczny.
+FreeImage jest Å‚atwy w uÅ¼yciu, szybki, wielowÄ…tkowy i bezpieczny.
 
 %package devel
 Summary:	Header files for FreeImage library
-Summary(pl):	Pliki nag³ówkowe biblioteki FreeImage
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe biblioteki FreeImage
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for FreeImage library.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki FreeImage.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki FreeImage.
 
 %package static
 Summary:	Static FreeImage library
-Summary(pl):	Statyczna biblioteka FreeImage
+Summary(pl.UTF-8):   Statyczna biblioteka FreeImage
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static FreeImage library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka FreeImage.
 
 %prep
