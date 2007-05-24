@@ -1,14 +1,15 @@
+%define	_ver	%(echo %{version} | tr -d .)
 Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.9.2
+Version:	3.9.3
 Release:	1
 License:	GPL and FIPL (see the license-fi.txt)
 Group:		Libraries
-Source0:	http://dl.sourceforge.net/freeimage/%{name}392.zip
-# Source0-md5:	e7a3e2429a0db52fb377bed7da61e5a5
-Source1:	http://dl.sourceforge.net/freeimage/%{name}392.pdf
-# Source1-md5:	ecbc9eedf5b4e04495deaaee8935c0fd
+Source0:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.zip
+# Source0-md5:	bf3574fa4e6135cf511d5ff4bc871ec3
+Source1:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.pdf
+# Source1-md5:	5a59f1d2c380da666f1cd42e082e8041
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	unzip
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -54,7 +55,7 @@ Statyczna biblioteka FreeImage.
 
 %build
 %{__make} \
-	COMPILERFLAGS="%{rpmcflags}"
+	RPM_OPT_FLAGS="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -84,7 +85,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc FreeImage392.pdf
+%doc FreeImage%{_ver}.pdf
 %attr(755,root,root) %{_libdir}/libfreeimage.so
 %{_includedir}/*
 %{_examplesdir}/%{name}-%{version}
