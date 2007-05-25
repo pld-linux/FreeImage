@@ -21,8 +21,8 @@ others as needed by multimedia applications. FreeImage is easy to use,
 fast, multithreading, safe.
 
 %description -l pl.UTF-8
-FreeImage jest projektem biblioteki dla deweloperów, którzy chcą
-wspierać popularne formaty plików graficznych takie jak PNG, BMP,
+FreeImage jest projektem biblioteki dla programistów chcących
+obsługiwać popularne formaty plików graficznych takie jak PNG, BMP,
 JPEG, TIFF i inne wykorzystywane w aplikacjach multimedialnych.
 FreeImage jest łatwy w użyciu, szybki, wielowątkowy i bezpieczny.
 
@@ -68,7 +68,6 @@ install Dist/*.h $RPM_BUILD_ROOT%{_includedir}
 cp -rf Examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -f %{SOURCE1} .
 
-cd Dist
 ln -sf libfreeimage-%{version}.so \
 	$RPM_BUILD_ROOT%{_libdir}/libfreeimage.so
 
