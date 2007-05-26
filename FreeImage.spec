@@ -11,6 +11,7 @@ Source0:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.zip
 Source1:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.pdf
 # Source1-md5:	5a59f1d2c380da666f1cd42e082e8041
 URL:		http://freeimage.sourceforge.net/index.html
+BuildRequires:	libstdc++-devel
 BuildRequires:	unzip
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
