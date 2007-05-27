@@ -56,7 +56,9 @@ Statyczna biblioteka FreeImage.
 
 %build
 %{__make} \
-	RPM_OPT_FLAGS="%{rpmcflags}"
+	CC="%{__cc}" \
+	CXX="%{__cxx}" \
+	COMPILERFLAGS="%{rpmcflags} -fPIC"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -87,9 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc FreeImage%{_ver}.pdf
 %attr(755,root,root) %{_libdir}/libfreeimage.so
-%{_includedir}/*
+%{_includedir}/FreeImage.h
 %{_examplesdir}/%{name}-%{version}
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/lib*.a
+%{_libdir}/libfreeimage.a
