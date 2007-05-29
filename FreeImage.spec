@@ -3,7 +3,7 @@ Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
 Version:	3.9.3
-Release:	1
+Release:	2
 License:	GPL and FIPL (see the license-fi.txt)
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.zip
