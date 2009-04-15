@@ -2,14 +2,14 @@
 Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.11.0
+Version:	3.12.0
 Release:	1
 License:	GPL and FIPL (see the license-fi.txt)
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.zip
-# Source0-md5:	ad1db36414391417654ba7bf1c0277d3
+# Source0-md5:	47b259102f776a4bcd7affc00942f3b4
 Source1:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.pdf
-# Source1-md5:	8624d38b391a66d2e23a5e44d5c0cbf1
+# Source1-md5:	241b0d44f9e0fd84d91244ec4e050ab6
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	libstdc++-devel
 BuildRequires:	unzip
