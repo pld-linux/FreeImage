@@ -1,15 +1,15 @@
-%define	_ver	%(echo %{version} | tr -d .)
+%define	fver	%(echo %{version} | tr -d .)
 Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.12.0
+Version:	3.15.3
 Release:	1
-License:	GPL and FIPL (see the license-fi.txt)
+License:	GPL and FIPL v1.0 (see the license-fi.txt)
 Group:		Libraries
-Source0:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.zip
-# Source0-md5:	47b259102f776a4bcd7affc00942f3b4
-Source1:	http://dl.sourceforge.net/freeimage/%{name}%{_ver}.pdf
-# Source1-md5:	241b0d44f9e0fd84d91244ec4e050ab6
+Source0:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.zip
+# Source0-md5:	6c305b4086500ff8541c596ea6fc7cd7
+Source1:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.pdf
+# Source1-md5:	37bfb61df9051b204f40ef7fb9f92fb8
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	libstdc++-devel
 BuildRequires:	unzip
@@ -58,7 +58,8 @@ Statyczna biblioteka FreeImage.
 %{__make} \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
-	COMPILERFLAGS="%{rpmcflags} -fPIC"
+	CFLAGS='%{rpmcflags} -fPIC -fvisibility=hidden -DNO_LCMS $(INCLUDE)' \
+	CXXFLAGS='%{rpmcxxflags} -fPIC -fvisibility=hidden -Wno-ctor-dtor-privacy $(INCLUDE)'
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -87,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc FreeImage%{_ver}.pdf
+%doc FreeImage%{fver}.pdf
 %attr(755,root,root) %{_libdir}/libfreeimage.so
 %{_includedir}/FreeImage.h
 %{_examplesdir}/%{name}-%{version}
