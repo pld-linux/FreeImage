@@ -1,15 +1,17 @@
+# TODO: use system libraries (if possible)
 %define	fver	%(echo %{version} | tr -d .)
 Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.15.3
+Version:	3.15.4
 Release:	1
 License:	GPL and FIPL v1.0 (see the license-fi.txt)
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.zip
-# Source0-md5:	6c305b4086500ff8541c596ea6fc7cd7
+# Source0-md5:	9f9a3b2c3c1b4fd24fe479e8aaee86b1
 Source1:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.pdf
-# Source1-md5:	37bfb61df9051b204f40ef7fb9f92fb8
+# Source1-md5:	acfbb9bcf5f5ee5ab77824c666a39a15
+Patch0:		%{name}-includes.patch
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	libstdc++-devel
 BuildRequires:	unzip
@@ -53,6 +55,7 @@ Statyczna biblioteka FreeImage.
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1
 
 %build
 %{__make} \
