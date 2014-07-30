@@ -1,16 +1,25 @@
-# TODO: use system libraries (if possible)
+# TODO: use system libraries (if possible):
+# libjpeg 9a
+# libpng 1.6.10
+# libtiff 4.0.3+CVS
+# libraw 0.16.0
+# openjpeg 2.1.0+svn
+# zlib 1.2.8
+# libwebp 0.4.0+git
+# LibJXR 1.1+git
+# OpenEXR 1.7.1
 %define	fver	%(echo %{version} | tr -d .)
 Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.15.4
+Version:	3.16.0
 Release:	1
 License:	GPL and FIPL v1.0 (see the license-fi.txt)
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.zip
-# Source0-md5:	9f9a3b2c3c1b4fd24fe479e8aaee86b1
+# Source0-md5:	1a2d1fff6204adbd479cc98818892fc1
 Source1:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.pdf
-# Source1-md5:	acfbb9bcf5f5ee5ab77824c666a39a15
+# Source1-md5:	f8df04e0c5fb7a9af850a23df7ac244e
 Patch0:		%{name}-includes.patch
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	libstdc++-devel
@@ -58,11 +67,11 @@ Statyczna biblioteka FreeImage.
 %patch0 -p1
 
 %build
+CFLAGS="%{rpmcflags} -fPIC -fvisibility=hidden" \
+CXXFLAGS="%{rpmcxxflags} -fPIC -fvisibility=hidden -Wno-ctor-dtor-privacy" \
 %{__make} \
 	CC="%{__cc}" \
-	CXX="%{__cxx}" \
-	CFLAGS='%{rpmcflags} -fPIC -fvisibility=hidden -DNO_LCMS $(INCLUDE)' \
-	CXXFLAGS='%{rpmcxxflags} -fPIC -fvisibility=hidden -Wno-ctor-dtor-privacy $(INCLUDE)'
+	CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -75,6 +84,7 @@ install Dist/*.h $RPM_BUILD_ROOT%{_includedir}
 cp -rf Examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -f %{SOURCE1} .
 
+/sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
 ln -sf libfreeimage-%{version}.so \
 	$RPM_BUILD_ROOT%{_libdir}/libfreeimage.so
 
@@ -88,6 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README.linux Whatsnew.txt license-fi.txt
 %attr(755,root,root) %{_libdir}/libfreeimage-*.*.*.so
+%attr(755,root,root) %ghost %{_libdir}/libfreeimage.so.3
 
 %files devel
 %defattr(644,root,root,755)
