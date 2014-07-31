@@ -73,6 +73,12 @@ CXXFLAGS="%{rpmcxxflags} -fPIC -fvisibility=hidden -Wno-ctor-dtor-privacy" \
 	CC="%{__cc}" \
 	CXX="%{__cxx}"
 
+CFLAGS="%{rpmcflags} -fPIC -fvisibility=hidden" \
+CXXFLAGS="%{rpmcxxflags} -fPIC -fvisibility=hidden -Wno-ctor-dtor-privacy" \
+%{__make} -f Makefile.fip \
+	CC="%{__cc}" \
+	CXX="%{__cxx}"
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}}
@@ -87,6 +93,8 @@ cp -f %{SOURCE1} .
 /sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
 ln -sf libfreeimage-%{version}.so \
 	$RPM_BUILD_ROOT%{_libdir}/libfreeimage.so
+ln -sf libfreeimageplus-%{version}.so \
+	$RPM_BUILD_ROOT%{_libdir}/libfreeimageplus.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -99,14 +107,19 @@ rm -rf $RPM_BUILD_ROOT
 %doc README.linux Whatsnew.txt license-fi.txt
 %attr(755,root,root) %{_libdir}/libfreeimage-*.*.*.so
 %attr(755,root,root) %ghost %{_libdir}/libfreeimage.so.3
+%attr(755,root,root) %{_libdir}/libfreeimageplus-*.*.*.so
+%attr(755,root,root) %ghost %{_libdir}/libfreeimageplus.so.3
 
 %files devel
 %defattr(644,root,root,755)
 %doc FreeImage%{fver}.pdf
 %attr(755,root,root) %{_libdir}/libfreeimage.so
+%attr(755,root,root) %{_libdir}/libfreeimageplus.so
 %{_includedir}/FreeImage.h
+%{_includedir}/FreeImagePlus.h
 %{_examplesdir}/%{name}-%{version}
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libfreeimage.a
+%{_libdir}/libfreeimageplus.a
