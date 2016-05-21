@@ -1,26 +1,25 @@
 # TODO: use system libraries (if possible):
 # libjpeg 9a
-# libpng 1.6.10
-# libtiff 4.0.3+CVS
-# libraw 0.16.0
+# libpng 1.6.16
+# libtiff 4.0.4+CVS
+# libraw 0.17-alpha1
 # openjpeg 2.1.0+svn
 # zlib 1.2.8
-# libwebp 0.4.0+git
+# libwebp 0.4.2+git
 # LibJXR 1.1+git
-# OpenEXR 1.7.1
+# OpenEXR 2.2.0
 %define	fver	%(echo %{version} | tr -d .)
 Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.16.0
-Release:	2
+Version:	3.17.0
+Release:	1
 License:	GPL and FIPL v1.0 (see the license-fi.txt)
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.zip
-# Source0-md5:	1a2d1fff6204adbd479cc98818892fc1
+# Source0-md5:	459e15f0ec75d6efa3c7bd63277ead86
 Source1:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.pdf
-# Source1-md5:	f8df04e0c5fb7a9af850a23df7ac244e
-Patch0:		%{name}-includes.patch
+# Source1-md5:	9d7e12d5062b51082407a6d69aa7d020
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	libstdc++-devel
 BuildRequires:	unzip
@@ -64,7 +63,6 @@ Statyczna biblioteka FreeImage.
 
 %prep
 %setup -q -n %{name}
-%patch0 -p1
 
 %build
 CFLAGS="%{rpmcflags} -fPIC -fvisibility=hidden" \
