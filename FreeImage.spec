@@ -13,13 +13,14 @@ Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
 Version:	3.17.0
-Release:	1
+Release:	2
 License:	GPL and FIPL v1.0 (see the license-fi.txt)
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.zip
 # Source0-md5:	459e15f0ec75d6efa3c7bd63277ead86
 Source1:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.pdf
 # Source1-md5:	9d7e12d5062b51082407a6d69aa7d020
+Patch0:		%{name}-libwebp-cpp.patch
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	libstdc++-devel
 BuildRequires:	unzip
@@ -63,6 +64,7 @@ Statyczna biblioteka FreeImage.
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1
 
 %build
 CFLAGS="%{rpmcflags} -fPIC -fvisibility=hidden" \
