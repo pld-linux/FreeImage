@@ -1,28 +1,28 @@
 # TODO: use system libraries (if possible):
-# libjpeg 9a
-# libpng 1.6.16
-# libtiff 4.0.4+CVS
-# libraw 0.17-alpha1
+# libjpeg 9c
+# libpng 1.6.35
+# libtiff 4.0.9+git
+# libraw 0.19
 # openjpeg 2.1.0+svn
-# zlib 1.2.8
-# libwebp 0.4.2+git
+# zlib 1.2.11
+# libwebp 1.0.0+git
 # LibJXR 1.1+git
-# OpenEXR 2.2.0
+# OpenEXR 2.2.1
 %define	fver	%(echo %{version} | tr -d .)
 Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.17.0
-Release:	2
+Version:	3.18.0
+Release:	1
 License:	GPL and FIPL v1.0 (see the license-fi.txt)
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.zip
-# Source0-md5:	459e15f0ec75d6efa3c7bd63277ead86
+# Source0-md5:	f8ba138a3be233a3eed9c456e42e2578
 Source1:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.pdf
-# Source1-md5:	9d7e12d5062b51082407a6d69aa7d020
-Patch0:		%{name}-libwebp-cpp.patch
+# Source1-md5:	01d2b93728273caec87f19949fcc4981
 URL:		http://freeimage.sourceforge.net/index.html
 BuildRequires:	libstdc++-devel
+BuildRequires:	rpmbuild(macros) >= 1.752
 BuildRequires:	unzip
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -43,6 +43,7 @@ Summary:	Header files for FreeImage library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki FreeImage
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	libstdc++-devel
 
 %description devel
 Header files for FreeImage library.
@@ -62,9 +63,20 @@ Static FreeImage library.
 %description static -l pl.UTF-8
 Statyczna biblioteka FreeImage.
 
+%package apidocs
+Summary:	Documentation for FreeImage library
+Summary(pl.UTF-8):	Dokumentacja do biblioteki FreeImage
+Group:		Documentation
+%{?noarchpackage}
+
+%description apidocs
+Documentation for FreeImage library.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja do biblioteki FreeImage.
+
 %prep
 %setup -q -n %{name}
-%patch0 -p1
 
 %build
 CFLAGS="%{rpmcflags} -fPIC -fvisibility=hidden" \
@@ -104,15 +116,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.linux Whatsnew.txt license-fi.txt
-%attr(755,root,root) %{_libdir}/libfreeimage-*.*.*.so
+%doc README.linux README.md Whatsnew.txt license-fi.txt
+%attr(755,root,root) %{_libdir}/libfreeimage-%{version}.so
 %attr(755,root,root) %ghost %{_libdir}/libfreeimage.so.3
-%attr(755,root,root) %{_libdir}/libfreeimageplus-*.*.*.so
+%attr(755,root,root) %{_libdir}/libfreeimageplus-%{version}.so
 %attr(755,root,root) %ghost %{_libdir}/libfreeimageplus.so.3
 
 %files devel
 %defattr(644,root,root,755)
-%doc FreeImage%{fver}.pdf
 %attr(755,root,root) %{_libdir}/libfreeimage.so
 %attr(755,root,root) %{_libdir}/libfreeimageplus.so
 %{_includedir}/FreeImage.h
@@ -123,3 +134,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libfreeimage.a
 %{_libdir}/libfreeimageplus.a
+
+%files apidocs
+%defattr(644,root,root,755)
+%doc FreeImage%{fver}.pdf
