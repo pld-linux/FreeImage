@@ -67,7 +67,7 @@ Statyczna biblioteka FreeImage.
 Summary:	Documentation for FreeImage library
 Summary(pl.UTF-8):	Dokumentacja do biblioteki FreeImage
 Group:		Documentation
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description apidocs
 Documentation for FreeImage library.
