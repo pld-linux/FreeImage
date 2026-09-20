@@ -1,29 +1,60 @@
-# TODO: use system libraries (if possible):
-# libjpeg 9c
-# libpng 1.6.35
-# libtiff 4.0.9+git
-# libraw 0.19
-# openjpeg 2.1.0+svn
-# zlib 1.2.11
-# libwebp 1.0.0+git
-# LibJXR 1.1+git
-# OpenEXR 2.2.1
-%define	fver	%(echo %{version} | tr -d .)
+#
+# Conditional build:
+%bcond_without	static_libs	# static library
+
+# require at least bundled versions (except for libjpeg v9d, where we use libjpeg-turbo, which provides v8)
+%define		imath_ver	3.1.12
+%define		openexr_ver	3.3.13
+%define		jxrlib_ver	1.1-0.2019.10.9.2
+%define		libdeflate_ver	1.18
+%define		libjpeg_ver	8
+%define		libpng_ver	2:1.6.39
+%define		libtiff_ver	4.6.0
+%define		libwebp_ver	1.6.0
+%define		libraw_ver	0.21.1
+%define		openjp2_ver	2.5.4
+%define		zlib_ver	1.3.2
+
 Summary:	Library for handling different graphics files formats
 Summary(pl.UTF-8):	Biblioteka do manipulacji różnymi formatami plików graficznych
 Name:		FreeImage
-Version:	3.18.0
-Release:	2
+Version:	3.19.15
+Release:	1
 License:	GPL and FIPL v1.0 (see the license-fi.txt)
 Group:		Libraries
-Source0:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.zip
-# Source0-md5:	f8ba138a3be233a3eed9c456e42e2578
-Source1:	http://downloads.sourceforge.net/freeimage/%{name}%{fver}.pdf
+#Source0Download: https://github.com/danoli3/FreeImage/releases
+Source0:	https://github.com/danoli3/FreeImage/archive/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	00748dfb77cf611f1cf92deb9ca83b3b
+Source1:	https://downloads.sourceforge.net/freeimage/%{name}3180.pdf
 # Source1-md5:	01d2b93728273caec87f19949fcc4981
-URL:		http://freeimage.sourceforge.net/index.html
-BuildRequires:	libstdc++-devel
+Patch0:		%{name}-openjp2.patch
+Patch1:		%{name}-cmake-with-plus.patch
+# original project at https://freeimage.sourceforge.io/ (stopped at 3.18.0), here is maintained fork
+URL:		https://github.com/danoli3/FreeImage/releases
+BuildRequires:	Imath-devel >= %{imath_ver}
+BuildRequires:	OpenEXR-devel >= %{openexr_ver}
+BuildRequires:	jxrlib-devel >= %{jxrlib_ver}
+BuildRequires:	libdeflate-devel >= %{libdeflate_ver}
+BuildRequires:	libjpeg-devel >= %{libjpeg_ver}
+BuildRequires:	libpng-devel >= %{libpng_ver}
+BuildRequires:	libstdc++-devel >= 6:7
+BuildRequires:	libtiff-devel >= %{libtiff_ver}
+BuildRequires:	libwebp-devel >= %{libwebp_ver}
+BuildRequires:	libraw-devel >= %{libraw_ver}
+BuildRequires:	openjpeg2-devel >= %{openjp2_ver}
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.752
-BuildRequires:	unzip
+BuildRequires:	zlib-devel >= %{zlib_ver}
+Requires:	Imath >= %{imath_ver}
+Requires:	OpenEXR >= %{openexr_ver}
+Requires:	jxrlib >= %{jxrlib_ver}
+Requires:	libdeflate >= %{libdeflate_ver}
+Requires:	libjpeg >= %{libjpeg_ver}
+Requires:	libpng >= %{libpng_ver}
+Requires:	libtiff >= %{libtiff_ver}
+Requires:	libwebp >= %{libwebp_ver}
+Requires:	openjpeg2 >= %{openjp2_ver}
+Requires:	zlib >= %{zlib_ver}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -43,7 +74,16 @@ Summary:	Header files for FreeImage library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki FreeImage
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libstdc++-devel
+Requires:	Imath-devel >= %{imath_ver}
+Requires:	OpenEXR-devel >= %{openexr_ver}
+Requires:	jxrlib-devel >= %{jxrlib_ver}
+Requires:	libjpeg-devel >= %{libjpeg_ver}
+Requires:	libpng-devel >= %{libpng_ver}
+Requires:	libstdc++-devel >= 6:7
+Requires:	libtiff-devel >= %{libtiff_ver}
+Requires:	libwebp-devel >= %{libwebp_ver}
+Requires:	openjpeg2-devel >= %{openjp2_ver}
+Requires:	zlib-devel >= %{zlib_ver}
 
 %description devel
 Header files for FreeImage library.
@@ -76,37 +116,56 @@ Documentation for FreeImage library.
 Dokumentacja do biblioteki FreeImage.
 
 %prep
-%setup -q -n %{name}
+%setup -q
+%patch -P0 -p1
+%patch -P1 -p1
 
 %build
-CFLAGS="%{rpmcflags} -fPIC -fvisibility=hidden" \
-CXXFLAGS="%{rpmcxxflags} -fPIC -fvisibility=hidden -Wno-ctor-dtor-privacy" \
-%{__make} \
-	CC="%{__cc}" \
-	CXX="%{__cxx}"
+%if %{with static_libs}
+%cmake -B build-static \
+	-DBUILD_JXR=ON \
+	-DCMAKE_CXX_STANDARD=17 \
+	-DFREEIMAGE_STATIC=ON \
+	-DFREEIMAGE_USE_SYSTEM_LIBS=ON \
+	-DFREEIMAGE_VERSION="%{version}"
 
+%{__make} -C build-static
+%endif
+
+%cmake -B build \
+	-DBUILD_JXR=ON \
+	-DCMAKE_CXX_STANDARD=17 \
+	-DFREEIMAGE_USE_SYSTEM_LIBS=ON \
+	-DFREEIMAGE_VERSION="%{version}"
+
+%{__make} -C build
+
+%if 0
 CFLAGS="%{rpmcflags} -fPIC -fvisibility=hidden" \
 CXXFLAGS="%{rpmcxxflags} -fPIC -fvisibility=hidden -Wno-ctor-dtor-privacy" \
 %{__make} -f Makefile.fip \
 	CC="%{__cc}" \
 	CXX="%{__cxx}"
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}}
-install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+#install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}}
+install -d $RPM_BUILD_ROOT%{_examplesdir}
 
-install Dist/libfreeimage* $RPM_BUILD_ROOT%{_libdir}
-install Dist/*.h $RPM_BUILD_ROOT%{_includedir}
+#install Dist/libfreeimage* $RPM_BUILD_ROOT%{_libdir}
+#install Dist/*.h $RPM_BUILD_ROOT%{_includedir}
 
-cp -rf Examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
-cp -f %{SOURCE1} .
+%if %{with static_libs}
+%{__make} -C build-static install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
 
-/sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
-ln -sf libfreeimage-%{version}.so \
-	$RPM_BUILD_ROOT%{_libdir}/libfreeimage.so
-ln -sf libfreeimageplus-%{version}.so \
-	$RPM_BUILD_ROOT%{_libdir}/libfreeimageplus.so
+%{__make} -C build install \
+	DESTDIR=$RPM_BUILD_ROOT
+
+cp -pr Examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -p %{SOURCE1} .
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -117,24 +176,27 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README.linux README.md Whatsnew.txt license-fi.txt
-%attr(755,root,root) %{_libdir}/libfreeimage-%{version}.so
-%attr(755,root,root) %ghost %{_libdir}/libfreeimage.so.3
-%attr(755,root,root) %{_libdir}/libfreeimageplus-%{version}.so
-%attr(755,root,root) %ghost %{_libdir}/libfreeimageplus.so.3
+%{_libdir}/libfreeimage.so.*.*.*
+%ghost %{_libdir}/libfreeimage.so.3
+%{_libdir}/libfreeimageplus.so.*.*.*
+%ghost %{_libdir}/libfreeimageplus.so.3
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libfreeimage.so
-%attr(755,root,root) %{_libdir}/libfreeimageplus.so
+%{_libdir}/libfreeimage.so
+%{_libdir}/libfreeimageplus.so
 %{_includedir}/FreeImage.h
 %{_includedir}/FreeImagePlus.h
+%{_libdir}/cmake/FreeImage
 %{_examplesdir}/%{name}-%{version}
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libfreeimage.a
 %{_libdir}/libfreeimageplus.a
+%endif
 
 %files apidocs
 %defattr(644,root,root,755)
-%doc FreeImage%{fver}.pdf
+%doc FreeImage3180.pdf

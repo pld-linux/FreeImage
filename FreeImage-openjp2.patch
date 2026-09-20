@@ -1,0 +1,11 @@
+Drop OPJ_STATIC which breaks linking with system openjp2
+--- FreeImage-3.19.15/CMakeLists.txt.orig	2026-09-14 09:13:38.000000000 +0200
++++ FreeImage-3.19.15/CMakeLists.txt	2026-09-20 13:26:34.037460378 +0200
+@@ -1060,7 +1060,6 @@ endif()
+ # Preprocessor definitions
+ target_compile_definitions(${PROJECT_NAME} PUBLIC
+     DISABLE_PERF_MEASUREMENT
+-    OPJ_STATIC
+     NO_LCMS
+     NO_WINDOWS
+ )

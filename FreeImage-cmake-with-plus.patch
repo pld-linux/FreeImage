@@ -1,0 +1,80 @@
+--- FreeImage-3.19.15/CMakeLists.txt.orig	2026-09-20 15:58:32.111396863 +0200
++++ FreeImage-3.19.15/CMakeLists.txt	2026-09-20 16:09:14.051252510 +0200
+@@ -1042,16 +1042,31 @@ if(WIN32)
+     list(APPEND FreeImage_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/FreeImage.rc")
+ endif()
+ 
++set(FreeImagePlus_SOURCES
++    Wrapper/FreeImagePlus/src/fipImage.cpp
++    Wrapper/FreeImagePlus/src/fipMemoryIO.cpp
++    Wrapper/FreeImagePlus/src/fipMetadataFind.cpp
++    Wrapper/FreeImagePlus/src/fipMultiPage.cpp
++    Wrapper/FreeImagePlus/src/fipTag.cpp
++    Wrapper/FreeImagePlus/src/fipWinImage.cpp
++    Wrapper/FreeImagePlus/src/FreeImagePlus.cpp 
++)
++
+ if(FREEIMAGE_STATIC)
+     # Define the FreeImage library
+     add_library(${PROJECT_NAME} STATIC
+         ${FreeImage_SOURCES}
+ )
++    add_library(FreeImagePlus STATIC ${FreeImagePlus_SOURCES})
+ else()
+     add_library(${PROJECT_NAME} SHARED
+         ${FreeImage_SOURCES}
+ )
++    add_library(FreeImagePlus SHARED ${FreeImagePlus_SOURCES})
+ endif()
++set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${FREEIMAGE_VERSION} SOVERSION 3 OUTPUT_NAME freeimage)
++set_target_properties(FreeImagePlus PROPERTIES VERSION ${FREEIMAGE_VERSION} SOVERSION 3 OUTPUT_NAME freeimageplus)
++target_link_libraries(FreeImagePlus ${PROJECT_NAME})
+ 
+ if (DEFINED FreeImage_LIBS)
+     target_link_libraries(${PROJECT_NAME} ${FreeImage_LIBS})
+@@ -1093,17 +1108,26 @@ endif ()
+ install(TARGETS ${PROJECT_NAME}
+     EXPORT ${PROJECT_NAME}Targets
+     RUNTIME DESTINATION bin
+-    LIBRARY DESTINATION lib
+-    ARCHIVE DESTINATION lib
++    LIBRARY DESTINATION lib${LIB_SUFFIX}
++    ARCHIVE DESTINATION lib${LIB_SUFFIX}
++    INCLUDES DESTINATION include
++)
++install(TARGETS FreeImagePlus
++    EXPORT FreeImagePlusTargets
++    RUNTIME DESTINATION bin
++    LIBRARY DESTINATION lib${LIB_SUFFIX}
++    ARCHIVE DESTINATION lib${LIB_SUFFIX}
+     INCLUDES DESTINATION include
+ )
++
+ install(FILES Source/FreeImage.h DESTINATION include)
++install(FILES Wrapper/FreeImagePlus/FreeImagePlus.h DESTINATION include)
+ 
+ # Install the CMake Targets
+ install(EXPORT ${PROJECT_NAME}Targets
+     FILE ${PROJECT_NAME}Targets.cmake
+     NAMESPACE ${PROJECT_NAME}::
+-    DESTINATION lib/cmake/${PROJECT_NAME}
++    DESTINATION lib${LIB_SUFFIX}/cmake/${PROJECT_NAME}
+ )
+ 
+ # Install the CMake config
+@@ -1111,7 +1135,7 @@ include(CMakePackageConfigHelpers)
+ configure_package_config_file(
+     ${PROJECT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
+     ${PROJECT_NAME}Config.cmake
+-    INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
++    INSTALL_DESTINATION lib${LIB_SUFFIX}/cmake/${PROJECT_NAME}
+ )
+ write_basic_package_version_file(
+     ${PROJECT_NAME}ConfigVersion.cmake
+@@ -1121,5 +1145,5 @@ write_basic_package_version_file(
+ install(FILES
+     ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+     ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+-    DESTINATION lib/cmake/${PROJECT_NAME}
++    DESTINATION lib${LIB_SUFFIX}/cmake/${PROJECT_NAME}
+ )
